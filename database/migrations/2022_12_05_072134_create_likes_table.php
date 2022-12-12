@@ -13,17 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('videos', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->time('duration')->nullable();
-            $table->string('thumbnail')->nullable();
-//            $table->unsignedBigInteger('user_id');
-//            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Video::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->unique(['user_id', 'video_id']);
         });
     }
 
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('videos');
+        Schema::dropIfExists('likes');
     }
 };
